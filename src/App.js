@@ -1,4 +1,4 @@
-import { useState, Fragment } from "react";
+import { useState, Fragment, useEffect } from "react";
 import { nanoid } from "nanoid";
 
 import "./styles.css";
@@ -10,26 +10,17 @@ import Tasks from "./Components/Tasks";
 import AddTask from "./Components/Addtask";
 
 export default function App() {
-  const [tasks, setTasks] = useState([
-    {
-      id: 1,
-      text: "Cumpleanios",
-      day: "Lunes 5 de Octubre a las 18:00",
-      reminder: false
-    },
-    {
-      id: 2,
-      text: "Cumpleanios de Otto",
-      day: "Martes 18 de Mayo a las 18:00",
-      reminder: true
-    },
-    {
-      id: 3,
-      text: "Cumple de Morita",
-      day: "Miercoles 24 de Noviembre a las 18:00",
-      reminder: true
-    }
-  ]);
+  const [tasks, setTasks] = useState([]);
+
+  useEffect(() => {
+    const fetchTasks = async () => {
+      //prettier-ignore
+      const res = await fetch('https://60b111971f26610017fffc9f.mockapi.io/Tasks');
+      const data = await res.json();
+      console.log(data);
+    };
+    fetchTasks();
+  }, []);
 
   const [showAddTask, setShowAddtask] = useState(true);
 
@@ -73,7 +64,7 @@ export default function App() {
             onToggle={toggleReminder}
           />
         ) : (
-          "No tasks to Show"
+          "No tasks to Show - for now"
         )}
         {/* {console.log(JsonData)} */}
       </div>
